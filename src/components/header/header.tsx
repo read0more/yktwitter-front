@@ -5,7 +5,7 @@ import Customer from "../../interfaces/Customer";
 import styles from "./header.module.css";
 
 interface Props {
-  customer?: Customer;
+  customer: Customer | null;
 }
 
 const Header: React.FC<Props> = ({ customer }) => {
