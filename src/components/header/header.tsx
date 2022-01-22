@@ -1,4 +1,4 @@
-import react from "react";
+import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTwitter } from "@fortawesome/free-brands-svg-icons";
 import Customer from "../../interfaces/Customer";
@@ -6,9 +6,10 @@ import styles from "./header.module.css";
 
 interface Props {
   customer: Customer | null;
+  logout: () => void;
 }
 
-const Header: React.FC<Props> = ({ customer }) => {
+const Header: React.FC<Props> = ({ customer, logout }) => {
   return customer ? (
     <header className={styles.header}>
       <FontAwesomeIcon icon={faTwitter} className={styles.icon} />
