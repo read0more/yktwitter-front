@@ -1,27 +1,50 @@
 import React, { useState } from "react";
 import LoginForm from "../components/loginForm/loginForm";
 import RegistrationForm from "../components/registrationForm/registrationFrom";
-import Customer from "../interfaces/Customer";
-import AuthMysqlService from "../services/AuthMysqlService";
-import CustomerMysqlService from "../services/CustomerMysqlService";
+import AuthService from "../interfaces/AuthService";
+import CustomerService from "../interfaces/CustomerService";
+import styles from "./login.module.css";
 
 interface Props {
-  setCustomer: React.Dispatch<React.SetStateAction<Customer | null>>;
+  authService: AuthService;
+  customerService: CustomerService;
+  setToken: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
-export type formType = "login" | "registration";
+const Login: React.FC<Props> = ({ authService, customerService, setToken }) => {
+  const [isRegistration, setIsRegistration] = useState(false);
+  const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setIsRegistration(event.target.checked);
+  };
 
-const Login: React.FC<Props> = ({ setCustomer }) => {
-  const [mode, setMode] = useState<formType>("login");
-  const authMysqlService = new AuthMysqlService();
-  const customerMysqlService = new CustomerMysqlService();
+  const formToggleCheckbox = (
+    <div>
+      <input
+        type="checkbox"
+        id="is-registration"
+        onChange={handleCheckboxChange}
+        className={styles.checkbox}
+      />
+      <label htmlFor="is-registration" className={styles.label}>
+        Create a new account?
+      </label>
+    </div>
+  );
 
-  return mode === "login" ? (
-    <LoginForm authService={authMysqlService} setMode={setMode} />
-  ) : (
+  const handleLogin = async (id: string, password: string) => {
+    const token = await authService.login(id, password);
+    setToken(token);
+  };
+
+  return isRegistration ? (
     <RegistrationForm
-      customerService={customerMysqlService}
-      setMode={setMode}
+      customerService={customerService}
+      formToggleCheckbox={formToggleCheckbox}
+    />
+  ) : (
+    <LoginForm
+      handleLogin={handleLogin}
+      formToggleCheckbox={formToggleCheckbox}
     />
   );
 };

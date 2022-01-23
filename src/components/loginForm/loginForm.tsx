@@ -1,15 +1,48 @@
-import React from "react";
-import AuthService from "../../interfaces/AuthService";
-import { formType } from "../../pages/Login";
+import React, { useState } from "react";
 import styles from "./loginForm.module.css";
 
 interface Props {
-  authService: AuthService;
-  setMode: React.Dispatch<React.SetStateAction<formType>>;
+  handleLogin: (id: string, password: string) => Promise<void>;
+  formToggleCheckbox: JSX.Element;
 }
 
-const LoginForm: React.FC<Props> = ({ authService, setMode }) => {
-  return <span>loginForm</span>;
+const LoginForm: React.FC<Props> = ({ handleLogin, formToggleCheckbox }) => {
+  const [id, setId] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleSubmit = (event: React.SyntheticEvent) => {
+    event.preventDefault();
+    handleLogin(id, password);
+  };
+
+  const handleChange =
+    (setFunc: React.Dispatch<React.SetStateAction<any>>) =>
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      setFunc(event.target.value);
+    };
+
+  return (
+    <form onSubmit={handleSubmit} className={styles.form}>
+      <input
+        type="text"
+        value={id}
+        onChange={handleChange(setId)}
+        className={styles.input}
+        required
+      />
+      <input
+        type="password"
+        value={password}
+        onChange={handleChange(setPassword)}
+        className={styles.input}
+        required
+      />
+      <div className={styles.checkbox}>{formToggleCheckbox}</div>
+      <button type="submit" className={styles.button}>
+        Sigin in
+      </button>
+    </form>
+  );
 };
 
 export default LoginForm;

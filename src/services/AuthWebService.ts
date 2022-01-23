@@ -1,0 +1,31 @@
+import qs from "qs";
+import { AxiosInstance } from "axios";
+import AuthService from "../interfaces/AuthService";
+import Customer from "../interfaces/Customer";
+
+export default class AuthWebService implements AuthService {
+  private basePath = "/auth";
+  constructor(private http: AxiosInstance) {}
+
+  async login(id: string, password: string): Promise<string> {
+    const response = await this.http.post(
+      `${this.basePath}/login`,
+      qs.stringify({ id, password })
+    );
+
+    return response.data;
+  }
+
+  async me(): Promise<Customer> {
+    const response = await this.http.get(`${this.basePath}/me`);
+    const customer: Customer = {
+      id: response.data._id,
+      password: response.data._password,
+      name: response.data._name,
+      email: response.data._email,
+      profilePictureURL: response.data._profilePictureURL,
+    };
+
+    return customer;
+  }
+}

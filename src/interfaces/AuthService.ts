@@ -1,1 +1,3 @@
-export default interface AuthService {}
+export default interface AuthService {
+  login(id: string, password: string): Promise<string>;
+}

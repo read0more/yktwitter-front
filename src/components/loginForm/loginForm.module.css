@@ -1,0 +1,36 @@
+@value twitterCyan from '/src/common/colors.css';
+
+.form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-flow: column;
+  margin: 2em;
+  width: 80%;
+}
+
+.input,
+.button {
+  width: 100%;
+  margin-bottom: 0.5em;
+}
+
+.input:last-child,
+.checkbox {
+  margin-bottom: 1em;
+}
+
+.checkbox {
+  align-self: start;
+}
+
+.button {
+  background-color: twitterCyan;
+  color: white;
+  border: none;
+  cursor: pointer;
+  padding: 0.3em;
+  font-size: 1.3rem;
+  text-transform: uppercase;
+  font-weight: bold;
+}
