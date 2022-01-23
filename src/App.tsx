@@ -6,6 +6,7 @@ import Main from "./pages/Main";
 import AuthWebService from "./services/AuthWebService";
 import axios from "axios";
 import CustomerWebService from "./services/CustomerWebService";
+import styles from "./App.module.css";
 
 function App() {
   const [token, setToken] = useState<string | null>(null);
@@ -57,7 +58,7 @@ function App() {
   return (
     <div className="App">
       <Header customer={customer} logout={logout} />
-      {startPage}
+      <main className={styles.main}>{startPage}</main>
     </div>
   );
 }

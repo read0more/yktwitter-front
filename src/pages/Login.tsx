@@ -3,6 +3,7 @@ import LoginForm from "../components/loginForm/loginForm";
 import RegistrationForm from "../components/registrationForm/registrationFrom";
 import AuthService from "../interfaces/AuthService";
 import CustomerService from "../interfaces/CustomerService";
+import styles from "./login.module.css";
 
 interface Props {
   authService: AuthService;
@@ -17,10 +18,17 @@ const Login: React.FC<Props> = ({ authService, customerService, setToken }) => {
   };
 
   const formToggleCheckbox = (
-    <>
-      <input type="checkbox" onChange={handleCheckboxChange} />
-      Create a new account?
-    </>
+    <div>
+      <input
+        type="checkbox"
+        id="is-registration"
+        onChange={handleCheckboxChange}
+        className={styles.checkbox}
+      />
+      <label htmlFor="is-registration" className={styles.label}>
+        Create a new account?
+      </label>
+    </div>
   );
 
   const handleLogin = async (id: string, password: string) => {

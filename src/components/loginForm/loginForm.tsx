@@ -22,15 +22,25 @@ const LoginForm: React.FC<Props> = ({ handleLogin, formToggleCheckbox }) => {
     };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input type="text" value={id} onChange={handleChange(setId)} />
+    <form onSubmit={handleSubmit} className={styles.form}>
+      <input
+        type="text"
+        value={id}
+        onChange={handleChange(setId)}
+        className={styles.input}
+        required
+      />
       <input
         type="password"
         value={password}
         onChange={handleChange(setPassword)}
+        className={styles.input}
+        required
       />
-      <button type="submit">submit</button>
-      {formToggleCheckbox}
+      <div className={styles.checkbox}>{formToggleCheckbox}</div>
+      <button type="submit" className={styles.button}>
+        Sigin in
+      </button>
     </form>
   );
 };
