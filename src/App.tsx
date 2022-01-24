@@ -9,6 +9,7 @@ import CustomerWebService from "./services/CustomerWebService";
 import styles from "./App.module.css";
 
 function App() {
+  const LOCAL_STORAGE_TOKEN_NAME = "token";
   const [token, setToken] = useState<string | null>(null);
   const [customer, setCustomer] = useState<Customer | null>(null);
   const http = useMemo(() => {
@@ -27,7 +28,9 @@ function App() {
   );
 
   useEffect(() => {
-    const tokenFromLocalStorage = localStorage.getItem("token");
+    const tokenFromLocalStorage = localStorage.getItem(
+      LOCAL_STORAGE_TOKEN_NAME
+    );
     if (tokenFromLocalStorage) {
       setToken(tokenFromLocalStorage);
     }
@@ -53,7 +56,11 @@ function App() {
     />
   );
 
-  const logout = () => {};
+  const logout = () => {
+    setToken(null);
+    setCustomer(null);
+    localStorage.removeItem(LOCAL_STORAGE_TOKEN_NAME);
+  };
 
   return (
     <div className="App">
