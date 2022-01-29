@@ -39,7 +39,7 @@ const LoginForm: React.FC<Props> = ({ handleLogin, formToggleCheckbox }) => {
       />
       <div className={styles.checkbox}>{formToggleCheckbox}</div>
       <button type="submit" className={styles.button}>
-        Sigin in
+        Sign in
       </button>
     </form>
   );
