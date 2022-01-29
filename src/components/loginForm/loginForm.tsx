@@ -27,6 +27,7 @@ const LoginForm: React.FC<Props> = ({ handleLogin, formToggleCheckbox }) => {
         type="text"
         value={id}
         onChange={handleChange(setId)}
+        placeholder="id"
         className={styles.input}
         required
       />
@@ -34,6 +35,7 @@ const LoginForm: React.FC<Props> = ({ handleLogin, formToggleCheckbox }) => {
         type="password"
         value={password}
         onChange={handleChange(setPassword)}
+        placeholder="password"
         className={styles.input}
         required
       />
