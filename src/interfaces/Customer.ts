@@ -3,5 +3,5 @@ export default interface Customer {
   password: string;
   name: string;
   email: string;
-  profilePictureURL: string;
+  profile_picture_url: string;
 }
