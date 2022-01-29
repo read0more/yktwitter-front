@@ -24,6 +24,7 @@ const Login: React.FC<Props> = ({ authService, customerService, setToken }) => {
         type="checkbox"
         id="is-registration"
         onChange={handleCheckboxChange}
+        checked={isRegistration}
         className={styles.checkbox}
       />
       <label htmlFor="is-registration" className={styles.label}>
