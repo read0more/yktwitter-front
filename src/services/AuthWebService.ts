@@ -23,7 +23,7 @@ export default class AuthWebService implements AuthService {
       password: response.data._password,
       name: response.data._name,
       email: response.data._email,
-      profilePictureURL: response.data._profilePictureURL,
+      profile_picture_url: response.data._profilePictureURL,
     };
 
     return customer;

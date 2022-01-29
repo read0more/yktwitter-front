@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import LoginForm from "../components/loginForm/loginForm";
 import RegistrationForm from "../components/registrationForm/registrationFrom";
 import AuthService from "../interfaces/AuthService";
+import Customer from "../interfaces/Customer";
 import CustomerService from "../interfaces/CustomerService";
 import styles from "./login.module.css";
 
@@ -36,9 +37,14 @@ const Login: React.FC<Props> = ({ authService, customerService, setToken }) => {
     setToken(token);
   };
 
+  const handleRegistration = async (customer: Customer) => {
+    await customerService.registration(customer);
+    handleLogin(customer.id, customer.password);
+  };
+
   return isRegistration ? (
     <RegistrationForm
-      customerService={customerService}
+      handleRegistration={handleRegistration}
       formToggleCheckbox={formToggleCheckbox}
     />
   ) : (
