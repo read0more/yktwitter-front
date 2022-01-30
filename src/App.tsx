@@ -7,6 +7,7 @@ import AuthWebService from "./services/AuthWebService";
 import axios from "axios";
 import CustomerWebService from "./services/CustomerWebService";
 import styles from "./App.module.css";
+import PostWebService from "./services/PostWebService";
 
 function App() {
   const LOCAL_STORAGE_TOKEN_NAME = "token";
@@ -26,6 +27,7 @@ function App() {
     () => new CustomerWebService(http),
     [http]
   );
+  const postWebService = useMemo(() => new PostWebService(http), [http]);
 
   useEffect(() => {
     const tokenFromLocalStorage = localStorage.getItem(
@@ -34,7 +36,8 @@ function App() {
     if (tokenFromLocalStorage) {
       setToken(tokenFromLocalStorage);
     }
-  }, []);
+    http.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+  }, [http, token]);
 
   useEffect(() => {
     if (!token) return;
@@ -47,7 +50,7 @@ function App() {
 
   // todo: localstorage에 token 있을경우 로그인 화면 잠깐 깜빡이니 로딩화면 추가
   const startPage = customer ? (
-    <Main customer={customer} />
+    <Main customer={customer} postService={postWebService} />
   ) : (
     <Login
       authService={authWebService}
