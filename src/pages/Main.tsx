@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import AddPostForm from "../components/addPostForm/addPostForm";
 import Posts from "../components/posts/posts";
 import Customer from "../interfaces/Customer";
@@ -17,12 +17,19 @@ const Main: React.FC<Props> = ({ customer, postService }) => {
     postService.create(postText);
   };
 
+  useEffect(() => {
+    (async function () {
+      const posts = await postService.readAll();
+      setPosts(posts);
+    })();
+  }, []);
+
   const updatePost = () => {};
   const deletePost = () => {};
   return (
     <>
       <AddPostForm onCreate={addPost} />
-      <Posts posts={posts} />
+      <Posts posts={posts} customer={customer} />
     </>
   );
 };
