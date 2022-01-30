@@ -1,4 +1,5 @@
 export default interface Customer {
+  entity_id: string;
   id: string;
   password: string;
   name: string;

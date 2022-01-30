@@ -19,6 +19,7 @@ export default class AuthWebService implements AuthService {
   async me(): Promise<Customer> {
     const response = await this.http.get(`${this.basePath}/me`);
     const customer: Customer = {
+      entity_id: response.data._entity_id,
       id: response.data._id,
       password: response.data._password,
       name: response.data._name,

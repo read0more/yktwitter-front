@@ -21,6 +21,7 @@ const RegistrationForm: React.FC<Props> = ({
     event.preventDefault();
 
     const newCustomer = {
+      entity_id: "",
       id,
       password,
       name,
