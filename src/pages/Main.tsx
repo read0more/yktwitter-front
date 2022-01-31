@@ -1,43 +1,34 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import AddPostForm from "../components/addPostForm/addPostForm";
 import Posts from "../components/posts/posts";
 import Customer from "../interfaces/Customer";
 import Post from "../interfaces/Post";
-import PostService from "../interfaces/PostService";
-import { io } from "socket.io-client";
 
 interface Props {
   customer: Customer | null;
-  postService: PostService;
+  posts: Post[];
+  addPost: (postText: string) => void;
+  readAllPost: () => void;
+  updatePost: (post: Post) => void;
+  deletePost: (post: Post) => void;
+  startSocket: () => void;
 }
 
-const Main: React.FC<Props> = ({ customer, postService }) => {
-  const [posts, setPosts] = useState<Post[]>([]);
-
-  const addPost = (postText: string) => {
-    postService.create(postText);
-  };
-
+const Main: React.FC<Props> = ({
+  customer,
+  posts,
+  addPost,
+  readAllPost,
+  updatePost,
+  deletePost,
+  startSocket,
+}) => {
   useEffect(() => {
     (async function () {
-      const posts = await postService.readAll();
-      setPosts(posts);
-
-      const socket = io("ws://localhost:3000");
-      socket.on("changed_post", (changedPost: Post[]) => {
-        console.log(changedPost);
-        setPosts(changedPost);
-      });
+      await readAllPost();
+      startSocket();
     })();
-  }, [postService]);
-
-  const updatePost = (post: Post) => {
-    postService.update(post);
-  };
-
-  const deletePost = (post: Post) => {
-    postService.delete(post);
-  };
+  }, [readAllPost, startSocket]);
 
   return (
     <>

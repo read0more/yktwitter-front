@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import Header from "./components/header/header";
 import Customer from "./interfaces/Customer";
 import Login from "./pages/Login";
@@ -8,11 +8,15 @@ import axios from "axios";
 import CustomerWebService from "./services/CustomerWebService";
 import styles from "./App.module.css";
 import PostWebService from "./services/PostWebService";
+import Post from "./interfaces/Post";
+import { io } from "socket.io-client";
 
 function App() {
   const LOCAL_STORAGE_TOKEN_NAME = "token";
   const [token, setToken] = useState<string | null>(null);
   const [customer, setCustomer] = useState<Customer | null>(null);
+  const [posts, setPosts] = useState<Post[]>([]);
+
   const http = useMemo(() => {
     const http = axios.create({
       baseURL: process.env.REACT_APP_WEB_SERVICE_BASEURL,
@@ -28,6 +32,31 @@ function App() {
     [http]
   );
   const postWebService = useMemo(() => new PostWebService(http), [http]);
+
+  const addPost = (postText: string) => {
+    postWebService.create(postText);
+  };
+
+  const readAllPost = useCallback(async () => {
+    const posts = await postWebService.readAll();
+    setPosts(posts);
+  }, [postWebService]);
+
+  const updatePost = (post: Post) => {
+    postWebService.update(post);
+  };
+
+  const deletePost = (post: Post) => {
+    postWebService.delete(post);
+  };
+
+  const startSocket = useCallback(() => {
+    const socket = io("ws://localhost:3000");
+    socket.on("changed_post", (changedPost: Post[]) => {
+      console.log(changedPost);
+      setPosts(changedPost);
+    });
+  }, []);
 
   useEffect(() => {
     const tokenFromLocalStorage = localStorage.getItem(
@@ -49,7 +78,15 @@ function App() {
 
   // todo: localstorage에 token 있을경우 로그인 화면 잠깐 깜빡이니 로딩화면 추가
   const startPage = customer ? (
-    <Main customer={customer} postService={postWebService} />
+    <Main
+      customer={customer}
+      posts={posts}
+      addPost={addPost}
+      readAllPost={readAllPost}
+      updatePost={updatePost}
+      deletePost={deletePost}
+      startSocket={startSocket}
+    />
   ) : (
     <Login
       authService={authWebService}

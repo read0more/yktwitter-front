@@ -11,6 +11,7 @@ const AddPostForm: React.FC<Props> = ({ onCreate }) => {
   const handleSubmit = (event: React.SyntheticEvent) => {
     event.preventDefault();
     onCreate(post);
+    setPost("");
   };
 
   const handleChange =
