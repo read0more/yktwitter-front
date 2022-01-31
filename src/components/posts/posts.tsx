@@ -7,10 +7,11 @@ import styles from "./addPostForm.module.css";
 interface Props {
   customer: Customer | null;
   posts: PostInterface[];
-  onUpdate: (post: PostInterface) => Promise<void>;
+  onUpdate: (post: PostInterface) => void;
+  onDelete: (post: PostInterface) => void;
 }
 
-const Posts: React.FC<Props> = ({ posts, customer, onUpdate }) => {
+const Posts: React.FC<Props> = ({ posts, customer, onUpdate, onDelete }) => {
   return (
     <ul>
       {posts.map((post) => (
@@ -19,6 +20,7 @@ const Posts: React.FC<Props> = ({ posts, customer, onUpdate }) => {
           customer={customer}
           post={post}
           onUpdate={onUpdate}
+          onDelete={onDelete}
         />
       ))}
     </ul>
