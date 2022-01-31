@@ -26,4 +26,18 @@ export default class PostWebService implements PostService {
 
     return posts;
   }
+
+  async update(post: Post): Promise<Post> {
+    const response = await this.http.put(
+      `${this.basePath}/${post.entity_id}`,
+      qs.stringify({ content: post.content })
+    );
+
+    return {
+      entity_id: response.data.entityId,
+      customer_id: response.data.customerId,
+      content: response.data.content,
+      created_at: response.data.createdAt,
+    };
+  }
 }

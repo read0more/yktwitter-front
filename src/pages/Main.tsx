@@ -27,12 +27,16 @@ const Main: React.FC<Props> = ({ customer, postService }) => {
     const socket = io("ws://localhost:3000");
   }, [postService]);
 
-  const updatePost = () => {};
+  const updatePost = async (post: Post) => {
+    await postService.update(post);
+  };
+
   const deletePost = () => {};
+
   return (
     <>
       <AddPostForm onCreate={addPost} />
-      <Posts posts={posts} customer={customer} />
+      <Posts posts={posts} customer={customer} onUpdate={updatePost} />
     </>
   );
 };

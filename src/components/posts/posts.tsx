@@ -7,13 +7,19 @@ import styles from "./addPostForm.module.css";
 interface Props {
   customer: Customer | null;
   posts: PostInterface[];
+  onUpdate: (post: PostInterface) => Promise<void>;
 }
 
-const Posts: React.FC<Props> = ({ posts, customer }) => {
+const Posts: React.FC<Props> = ({ posts, customer, onUpdate }) => {
   return (
     <ul>
       {posts.map((post) => (
-        <Post key={post.entity_id} customer={customer} post={post} />
+        <Post
+          key={post.entity_id}
+          customer={customer}
+          post={post}
+          onUpdate={onUpdate}
+        />
       ))}
     </ul>
   );
