@@ -22,9 +22,13 @@ const Main: React.FC<Props> = ({ customer, postService }) => {
     (async function () {
       const posts = await postService.readAll();
       setPosts(posts);
-    })();
 
-    const socket = io("ws://localhost:3000");
+      const socket = io("ws://localhost:3000");
+      socket.on("changed_post", (changedPost: Post[]) => {
+        console.log(changedPost);
+        setPosts(changedPost);
+      });
+    })();
   }, [postService]);
 
   const updatePost = (post: Post) => {
