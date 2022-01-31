@@ -36,8 +36,7 @@ function App() {
     if (tokenFromLocalStorage) {
       setToken(tokenFromLocalStorage);
     }
-    http.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-  }, [http, token]);
+  }, [http]);
 
   useEffect(() => {
     if (!token) return;
