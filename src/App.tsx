@@ -42,6 +42,13 @@ function App() {
     setPosts(posts);
   }, [postWebService]);
 
+  const readMyPost = () => {
+    const filteredPosts = posts.filter(
+      (post) => customer?.entity_id === post.customer_id
+    );
+    setPosts(filteredPosts);
+  };
+
   const updatePost = (post: Post) => {
     postWebService.update(post);
   };
@@ -76,7 +83,6 @@ function App() {
     });
   }, [authWebService, http.defaults.headers.common, token]);
 
-  // todo: localstorage에 token 있을경우 로그인 화면 잠깐 깜빡이니 로딩화면 추가
   const startPage = customer ? (
     <Main
       customer={customer}
@@ -103,7 +109,12 @@ function App() {
 
   return (
     <div className="App">
-      <Header customer={customer} logout={logout} />
+      <Header
+        customer={customer}
+        logout={logout}
+        readMyPost={readMyPost}
+        readAllPost={readAllPost}
+      />
       <main className={styles.main}>{startPage}</main>
     </div>
   );
