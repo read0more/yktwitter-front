@@ -6,10 +6,11 @@ import styles from "./post.module.css";
 interface Props {
   customer: Customer | null;
   post: PostInterface;
-  onUpdate: (post: PostInterface) => Promise<void>;
+  onUpdate: (post: PostInterface) => void;
+  onDelete: (post: PostInterface) => void;
 }
 
-const Post: React.FC<Props> = ({ customer, post, onUpdate }) => {
+const Post: React.FC<Props> = ({ customer, post, onUpdate, onDelete }) => {
   const isMine = post.customer_id === customer?.entity_id;
   const [isUpdate, setIsUpdate] = useState(false);
   const [updateText, setUpdateText] = useState(post.content);
@@ -25,6 +26,10 @@ const Post: React.FC<Props> = ({ customer, post, onUpdate }) => {
       onUpdate({ ...post, content: updateText });
     }
     setIsUpdate(!isUpdate);
+  };
+
+  const handleDelete = (event: React.MouseEvent<HTMLButtonElement>) => {
+    onDelete(post);
   };
 
   const handleChange =
@@ -50,7 +55,7 @@ const Post: React.FC<Props> = ({ customer, post, onUpdate }) => {
       {isMine ? (
         <>
           <button onClick={handleUpdate}>수정</button>
-          <button>삭제</button>
+          <button onClick={handleDelete}>삭제</button>
         </>
       ) : (
         ""
