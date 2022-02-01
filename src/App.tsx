@@ -70,10 +70,14 @@ function App() {
       if (!token) return;
       http.defaults.headers.common["Authorization"] = `Bearer ${token}`;
       localStorage.setItem("token", token);
-      authWebService.me().then((customer) => {
-        setCustomer(customer);
-        setIsLoading(false);
-      });
+      authWebService
+        .me()
+        .then((customer) => {
+          setCustomer(customer);
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
     },
     [authWebService, http.defaults.headers.common]
   );
