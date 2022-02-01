@@ -3,6 +3,7 @@ import AddPostForm from "../components/addPostForm/addPostForm";
 import Posts from "../components/posts/posts";
 import Customer from "../interfaces/Customer";
 import Post from "../interfaces/Post";
+import WebSocketService from "../services/WebSocketService";
 
 interface Props {
   customer: Customer | null;
@@ -11,7 +12,7 @@ interface Props {
   readAllPost: () => void;
   updatePost: (post: Post) => void;
   deletePost: (post: Post) => void;
-  startSocket: () => void;
+  setPosts: React.Dispatch<React.SetStateAction<Post[]>>;
 }
 
 const Main: React.FC<Props> = ({
@@ -21,14 +22,22 @@ const Main: React.FC<Props> = ({
   readAllPost,
   updatePost,
   deletePost,
-  startSocket,
+  setPosts,
 }) => {
   useEffect(() => {
+    const webSocketService = new WebSocketService("ws://localhost:3000");
+
     (async function () {
       await readAllPost();
-      startSocket();
+      webSocketService.addEvent("changed_post", (changedPost: Post[]) => {
+        setPosts(changedPost);
+      });
     })();
-  }, [readAllPost, startSocket]);
+
+    return () => {
+      webSocketService.close();
+    };
+  }, [readAllPost, setPosts]);
 
   return (
     <>

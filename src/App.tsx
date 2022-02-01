@@ -10,6 +10,7 @@ import styles from "./App.module.css";
 import PostWebService from "./services/PostWebService";
 import Post from "./interfaces/Post";
 import { io } from "socket.io-client";
+import WebSocketService from "./services/WebSocketService";
 
 function App() {
   const LOCAL_STORAGE_TOKEN_NAME = "token";
@@ -57,14 +58,6 @@ function App() {
     postWebService.delete(post);
   };
 
-  const startSocket = useCallback(() => {
-    const socket = io("ws://localhost:3000");
-    socket.on("changed_post", (changedPost: Post[]) => {
-      console.log(changedPost);
-      setPosts(changedPost);
-    });
-  }, []);
-
   const login = useCallback(
     (token: string) => {
       if (!token) return;
@@ -106,7 +99,7 @@ function App() {
       readAllPost={readAllPost}
       updatePost={updatePost}
       deletePost={deletePost}
-      startSocket={startSocket}
+      setPosts={setPosts}
     />
   ) : (
     <Login
