@@ -65,23 +65,32 @@ function App() {
     });
   }, []);
 
+  const login = useCallback(
+    (token: string) => {
+      if (!token) return;
+      http.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      localStorage.setItem("token", token);
+      authWebService.me().then((customer) => {
+        setCustomer(customer);
+      });
+    },
+    [authWebService, http.defaults.headers.common]
+  );
+
+  const logout = () => {
+    setToken(null);
+    setCustomer(null);
+    localStorage.removeItem(LOCAL_STORAGE_TOKEN_NAME);
+  };
+
   useEffect(() => {
     const tokenFromLocalStorage = localStorage.getItem(
       LOCAL_STORAGE_TOKEN_NAME
     );
     if (tokenFromLocalStorage) {
-      setToken(tokenFromLocalStorage);
+      login(tokenFromLocalStorage);
     }
-  }, [http]);
-
-  useEffect(() => {
-    if (!token) return;
-    http.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-    localStorage.setItem("token", token);
-    authWebService.me().then((customer) => {
-      setCustomer(customer);
-    });
-  }, [authWebService, http.defaults.headers.common, token]);
+  }, [login]);
 
   const startPage = customer ? (
     <Main
@@ -100,12 +109,6 @@ function App() {
       setToken={setToken}
     />
   );
-
-  const logout = () => {
-    setToken(null);
-    setCustomer(null);
-    localStorage.removeItem(LOCAL_STORAGE_TOKEN_NAME);
-  };
 
   return (
     <div className="App">
