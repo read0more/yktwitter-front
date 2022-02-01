@@ -15,6 +15,7 @@ function App() {
   const LOCAL_STORAGE_TOKEN_NAME = "token";
   const [customer, setCustomer] = useState<Customer | null>(null);
   const [posts, setPosts] = useState<Post[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const http = useMemo(() => {
     const http = axios.create({
@@ -71,6 +72,7 @@ function App() {
       localStorage.setItem("token", token);
       authWebService.me().then((customer) => {
         setCustomer(customer);
+        setIsLoading(false);
       });
     },
     [authWebService, http.defaults.headers.common]
@@ -87,6 +89,7 @@ function App() {
       LOCAL_STORAGE_TOKEN_NAME
     );
     if (tokenFromLocalStorage) {
+      setIsLoading(true);
       login(tokenFromLocalStorage);
     }
   }, [login]);
@@ -117,7 +120,7 @@ function App() {
         readMyPost={readMyPost}
         readAllPost={readAllPost}
       />
-      <main className={styles.main}>{startPage}</main>
+      <main className={styles.main}>{isLoading ? "" : startPage}</main>
     </div>
   );
 }
