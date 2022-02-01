@@ -13,6 +13,7 @@ interface Props {
   updatePost: (post: Post) => void;
   deletePost: (post: Post) => void;
   setPosts: React.Dispatch<React.SetStateAction<Post[]>>;
+  isReadMyPost: boolean;
 }
 
 const Main: React.FC<Props> = ({
@@ -23,21 +24,22 @@ const Main: React.FC<Props> = ({
   updatePost,
   deletePost,
   setPosts,
+  isReadMyPost,
 }) => {
   useEffect(() => {
     const webSocketService = new WebSocketService("ws://localhost:3000");
 
     (async function () {
-      await readAllPost();
+      if (!isReadMyPost) await readAllPost();
       webSocketService.addEvent("changed_post", (changedPost: Post[]) => {
-        setPosts(changedPost);
+        if (!isReadMyPost) setPosts(changedPost);
       });
     })();
 
     return () => {
       webSocketService.close();
     };
-  }, [readAllPost, setPosts]);
+  }, [isReadMyPost, readAllPost, setPosts]);
 
   return (
     <>
