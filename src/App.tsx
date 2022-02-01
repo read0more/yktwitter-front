@@ -9,14 +9,13 @@ import CustomerWebService from "./services/CustomerWebService";
 import styles from "./App.module.css";
 import PostWebService from "./services/PostWebService";
 import Post from "./interfaces/Post";
-import { io } from "socket.io-client";
-import WebSocketService from "./services/WebSocketService";
 
 function App() {
   const LOCAL_STORAGE_TOKEN_NAME = "token";
   const [customer, setCustomer] = useState<Customer | null>(null);
   const [posts, setPosts] = useState<Post[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isReadMyPost, setIsReadMyPost] = useState(false);
 
   const http = useMemo(() => {
     const http = axios.create({
@@ -41,6 +40,7 @@ function App() {
   const readAllPost = useCallback(async () => {
     const posts = await postWebService.readAll();
     setPosts(posts);
+    setIsReadMyPost(false);
   }, [postWebService]);
 
   const readMyPost = () => {
@@ -48,6 +48,7 @@ function App() {
       (post) => customer?.entity_id === post.customer_id
     );
     setPosts(filteredPosts);
+    setIsReadMyPost(true);
   };
 
   const updatePost = (post: Post) => {
@@ -100,6 +101,7 @@ function App() {
       updatePost={updatePost}
       deletePost={deletePost}
       setPosts={setPosts}
+      isReadMyPost={isReadMyPost}
     />
   ) : (
     <Login
