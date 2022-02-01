@@ -9,10 +9,10 @@ import styles from "./login.module.css";
 interface Props {
   authService: AuthService;
   customerService: CustomerService;
-  setToken: React.Dispatch<React.SetStateAction<string | null>>;
+  login: (token: string) => void;
 }
 
-const Login: React.FC<Props> = ({ authService, customerService, setToken }) => {
+const Login: React.FC<Props> = ({ authService, customerService, login }) => {
   const [isRegistration, setIsRegistration] = useState(false);
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setIsRegistration(event.target.checked);
@@ -35,7 +35,7 @@ const Login: React.FC<Props> = ({ authService, customerService, setToken }) => {
 
   const handleLogin = async (id: string, password: string) => {
     const token = await authService.login(id, password);
-    setToken(token);
+    login(token);
   };
 
   const handleRegistration = async (customer: Customer) => {

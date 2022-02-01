@@ -13,7 +13,6 @@ import { io } from "socket.io-client";
 
 function App() {
   const LOCAL_STORAGE_TOKEN_NAME = "token";
-  const [token, setToken] = useState<string | null>(null);
   const [customer, setCustomer] = useState<Customer | null>(null);
   const [posts, setPosts] = useState<Post[]>([]);
 
@@ -78,7 +77,7 @@ function App() {
   );
 
   const logout = () => {
-    setToken(null);
+    http.defaults.headers.common["Authorization"] = "";
     setCustomer(null);
     localStorage.removeItem(LOCAL_STORAGE_TOKEN_NAME);
   };
@@ -106,7 +105,7 @@ function App() {
     <Login
       authService={authWebService}
       customerService={customerWebService}
-      setToken={setToken}
+      login={login}
     />
   );
 
