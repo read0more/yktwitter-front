@@ -21,9 +21,17 @@ const AddPostForm: React.FC<Props> = ({ onCreate }) => {
     };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input type="text" value={post} onChange={handleChange(setPost)} />
-      <button type="submit">post</button>
+    <form onSubmit={handleSubmit} className={styles.form}>
+      <input
+        type="text"
+        value={post}
+        onChange={handleChange(setPost)}
+        className={styles.input}
+        placeholder="추가할 내용을 입력"
+      />
+      <button type="submit" className={styles.button}>
+        post
+      </button>
     </form>
   );
 };
