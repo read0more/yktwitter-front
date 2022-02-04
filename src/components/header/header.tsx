@@ -3,7 +3,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTwitter } from "@fortawesome/free-brands-svg-icons";
 import Customer from "../../interfaces/Customer";
 import styles from "./header.module.css";
-import Post from "../../interfaces/Post";
 
 interface Props {
   customer: Customer | null;
@@ -22,6 +21,7 @@ const Header: React.FC<Props> = ({
     <header className={styles.header}>
       <FontAwesomeIcon icon={faTwitter} className={styles.icon} />
       <span className={styles.title}>ZZAPwitter</span>
+      <span className={styles.name}>@{customer.name}</span>
       <div className={styles.customer_menu}>
         <span onClick={readAllPost}>전체트윗</span>
         <span onClick={readMyPost}>내 트윗</span>
