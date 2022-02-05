@@ -45,7 +45,7 @@ function App() {
 
   const readMyPost = () => {
     const filteredPosts = posts.filter(
-      (post) => customer?.entity_id === post.customer_id
+      (post) => customer?.entity_id === post.customer_entity_id
     );
     setPosts(filteredPosts);
     setIsReadMyPost(true);

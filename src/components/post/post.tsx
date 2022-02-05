@@ -1,17 +1,17 @@
 import React, { useState } from "react";
-import Customer from "../../interfaces/Customer";
 import PostInterface from "../../interfaces/Post";
 import styles from "./post.module.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTimes, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
 
 interface Props {
-  customer: Customer | null;
+  isMine: boolean;
   post: PostInterface;
   onUpdate: (post: PostInterface) => void;
   onDelete: (post: PostInterface) => void;
 }
 
-const Post: React.FC<Props> = ({ customer, post, onUpdate, onDelete }) => {
-  const isMine = post.customer_id === customer?.entity_id;
+const Post: React.FC<Props> = ({ isMine, post, onUpdate, onDelete }) => {
   const [isUpdate, setIsUpdate] = useState(false);
   const [updateText, setUpdateText] = useState(post.content);
 
@@ -21,14 +21,14 @@ const Post: React.FC<Props> = ({ customer, post, onUpdate, onDelete }) => {
     setIsUpdate(false);
   };
 
-  const handleUpdate = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleUpdate = () => {
     if (isUpdate) {
       onUpdate({ ...post, content: updateText });
     }
     setIsUpdate(!isUpdate);
   };
 
-  const handleDelete = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleDelete = () => {
     onDelete(post);
   };
 
@@ -39,24 +39,43 @@ const Post: React.FC<Props> = ({ customer, post, onUpdate, onDelete }) => {
     };
 
   return (
-    <li>
-      {isUpdate ? (
-        <form onSubmit={handleSubmit}>
-          <input
-            type="text"
-            value={updateText}
-            onChange={handleChange(setUpdateText)}
-          />
-        </form>
-      ) : (
-        <span>{post.content}</span>
-      )}
-      <span>{post.created_at}</span>
+    <li className={styles.li}>
+      <img
+        src={post.customer_profile_picture_url}
+        alt="profile"
+        className={styles["profile-image"]}
+      />
+      <div>
+        <div className={styles["customer-info"]}>
+          <span className={styles.name}>{post.customer_name}</span>
+          <span className={styles.id}>@{post.customer_id}</span>
+          <span className={styles.date}>{post.created_at}</span>
+        </div>
+        {isUpdate && (
+          <form onSubmit={handleSubmit}>
+            <input
+              type="text"
+              value={updateText}
+              onChange={handleChange(setUpdateText)}
+            />
+          </form>
+        )}
+        {isUpdate ? "" : <div>{post.content}</div>}
+      </div>
+
       {isMine ? (
-        <>
-          <button onClick={handleUpdate}>수정</button>
-          <button onClick={handleDelete}>삭제</button>
-        </>
+        <div className={styles["icon-box"]}>
+          <FontAwesomeIcon
+            icon={faTimes}
+            className={styles.icon}
+            onClick={handleDelete}
+          />
+          <FontAwesomeIcon
+            icon={faPencilAlt}
+            className={styles.icon}
+            onClick={handleUpdate}
+          />
+        </div>
       ) : (
         ""
       )}

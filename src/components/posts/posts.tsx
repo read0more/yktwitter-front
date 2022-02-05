@@ -2,7 +2,7 @@ import React from "react";
 import Customer from "../../interfaces/Customer";
 import PostInterface from "../../interfaces/Post";
 import Post from "../post/post";
-import styles from "./addPostForm.module.css";
+import styles from "./posts.module.css";
 
 interface Props {
   customer: Customer | null;
@@ -13,11 +13,11 @@ interface Props {
 
 const Posts: React.FC<Props> = ({ posts, customer, onUpdate, onDelete }) => {
   return (
-    <ul>
+    <ul className={styles.ul}>
       {posts.map((post) => (
         <Post
           key={post.entity_id}
-          customer={customer}
+          isMine={post.customer_entity_id === customer?.entity_id}
           post={post}
           onUpdate={onUpdate}
           onDelete={onDelete}

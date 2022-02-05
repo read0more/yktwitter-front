@@ -32,7 +32,9 @@ const Main: React.FC<Props> = ({
     (async function () {
       if (!isReadMyPost) await readAllPost();
       webSocketService.addEvent("changed_post", (changedPost: Post[]) => {
-        if (!isReadMyPost) setPosts(changedPost);
+        if (!isReadMyPost) {
+          setPosts(changedPost);
+        }
       });
     })();
 

@@ -17,14 +17,7 @@ export default class PostWebService implements PostService {
   async readAll(): Promise<Post[]> {
     const response = await this.http.get(this.basePath);
     const responseData: any[] = response.data ?? [];
-    const posts: Post[] = responseData.map((data) => ({
-      entity_id: data.entityId,
-      customer_id: data.customerId,
-      content: data.content,
-      created_at: data.createdAt,
-    }));
-
-    return posts;
+    return responseData;
   }
 
   update(post: Post): void {
