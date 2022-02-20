@@ -77,8 +77,10 @@ function App() {
   }, [authWebService]);
 
   useEffect(() => {
-    setIsLoading(true);
-    login();
+    if (document.cookie.includes("token_expire")) {
+      setIsLoading(true);
+      login();
+    }
   }, [login]);
 
   const startPage = customer ? (
