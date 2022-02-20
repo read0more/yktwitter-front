@@ -11,7 +11,6 @@ import PostWebService from "./services/PostWebService";
 import Post from "./interfaces/Post";
 
 function App() {
-  const LOCAL_STORAGE_TOKEN_NAME = "token";
   const [customer, setCustomer] = useState<Customer | null>(null);
   const [posts, setPosts] = useState<Post[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -20,6 +19,7 @@ function App() {
   const http = useMemo(() => {
     const http = axios.create({
       baseURL: process.env.REACT_APP_WEB_SERVICE_BASEURL,
+      withCredentials: true,
     });
     http.defaults.headers.post["Content-Type"] =
       "application/x-www-form-urlencoded";
@@ -59,37 +59,26 @@ function App() {
     postWebService.delete(post);
   };
 
-  const login = useCallback(
-    (token: string) => {
-      if (!token) return;
-      http.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-      localStorage.setItem("token", token);
-      authWebService
-        .me()
-        .then((customer) => {
-          setCustomer(customer);
-        })
-        .finally(() => {
-          setIsLoading(false);
-        });
-    },
-    [authWebService, http.defaults.headers.common]
-  );
+  const login = useCallback(() => {
+    authWebService
+      .me()
+      .then((customer) => {
+        setCustomer(customer);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }, [authWebService]);
 
-  const logout = () => {
-    http.defaults.headers.common["Authorization"] = "";
+  const logout = useCallback(() => {
+    // todo: 백엔드 로그아웃 호출
+    authWebService.logout().then((e) => console.log(e));
     setCustomer(null);
-    localStorage.removeItem(LOCAL_STORAGE_TOKEN_NAME);
-  };
+  }, [authWebService]);
 
   useEffect(() => {
-    const tokenFromLocalStorage = localStorage.getItem(
-      LOCAL_STORAGE_TOKEN_NAME
-    );
-    if (tokenFromLocalStorage) {
-      setIsLoading(true);
-      login(tokenFromLocalStorage);
-    }
+    setIsLoading(true);
+    login();
   }, [login]);
 
   const startPage = customer ? (

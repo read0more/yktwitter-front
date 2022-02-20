@@ -29,4 +29,9 @@ export default class AuthWebService implements AuthService {
 
     return customer;
   }
+
+  async logout(): Promise<String> {
+    const response = await this.http.post(`${this.basePath}/logout`);
+    return response.data;
+  }
 }
