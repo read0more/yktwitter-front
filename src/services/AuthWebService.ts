@@ -34,4 +34,9 @@ export default class AuthWebService implements AuthService {
     const response = await this.http.post(`${this.basePath}/logout`);
     return response.data;
   }
+
+  async csrfToken(): Promise<String> {
+    const response = await this.http.get(`${this.basePath}/csrf-token`);
+    return response.data.csrfToken;
+  }
 }

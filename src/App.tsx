@@ -83,6 +83,19 @@ function App() {
     }
   }, [login]);
 
+  useEffect(() => {
+    authWebService
+      .csrfToken()
+      .then((csrfToken) => {
+        console.log(csrfToken);
+        if (typeof csrfToken !== "string") {
+          throw new Error();
+        }
+        http.defaults.headers.common["yktwitter-csrf-token"] = csrfToken;
+      })
+      .catch(console.error);
+  });
+
   const startPage = customer ? (
     <Main
       customer={customer}
