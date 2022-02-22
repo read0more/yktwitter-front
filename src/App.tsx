@@ -9,6 +9,7 @@ import CustomerWebService from "./services/CustomerWebService";
 import styles from "./App.module.css";
 import PostWebService from "./services/PostWebService";
 import Post from "./interfaces/Post";
+import axiosRetry from "axios-retry";
 
 function App() {
   const [customer, setCustomer] = useState<Customer | null>(null);
@@ -20,6 +21,17 @@ function App() {
     const http = axios.create({
       baseURL: process.env.REACT_APP_WEB_SERVICE_BASEURL,
       withCredentials: true,
+    });
+    axiosRetry(http, {
+      retries: 5,
+      retryDelay: (retry) => {
+        const delay = Math.pow(2, retry) * 100;
+        const jitter = delay * 0.1 * Math.random();
+        return delay + jitter;
+      },
+      retryCondition: (err) =>
+        axiosRetry.isNetworkOrIdempotentRequestError(err) ||
+        err.response?.status === 429,
     });
     http.defaults.headers.post["Content-Type"] =
       "application/x-www-form-urlencoded";
