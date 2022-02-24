@@ -1,0 +1,38 @@
+@value twitterCyan from '/src/common/colors.css';
+
+.header {
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;
+  height: 70px;
+  background-color: grey;
+}
+
+.icon {
+  color: twitterCyan;
+  font-size: 50px;
+  margin-right: 0.5em;
+}
+
+.name {
+  font-size: 0.8rem;
+  margin-left: 0.5em;
+  color: twitterCyan;
+}
+
+.title {
+  color: white;
+  font-weight: 500;
+  font-size: 1.5em;
+}
+
+.customer_menu {
+  margin-left: auto;
+}
+
+.customer_menu span {
+  cursor: pointer;
+  margin-right: 0.5em;
+  color: white;
+  font-weight: bold;
+}

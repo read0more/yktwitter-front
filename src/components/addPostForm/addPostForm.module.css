@@ -1,0 +1,23 @@
+@value twitterCyan from '/src/common/colors.css';
+
+.form {
+  width: 100%;
+  margin-top: 1em;
+}
+
+.input {
+  width: 89%;
+  height: 30px;
+  margin-right: 1%;
+  vertical-align: top;
+}
+
+.button {
+  width: 10%;
+  height: 30px;
+  background-color: twitterCyan;
+  color: white;
+  border: none;
+  font-weight: bold;
+  font-size: 1.3rem;
+}
